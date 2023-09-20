@@ -23,9 +23,7 @@ class RomanNumerals
 
     public static function generate($number)
     {
-        if ($number <= 0) {
-            return false;
-        } elseif ($number > 4000) {
+        if ($number <= 0 || $number > 4000) {
             return false;
         }
 
