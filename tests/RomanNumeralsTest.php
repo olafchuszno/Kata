@@ -13,7 +13,7 @@ class RomanNumeralsTest extends TestCase
         $this->assertEquals($numeral, RomanNumerals::generate($number));
     }
 
-    public function checks()
+    public static function checks()
     {
         return [
             [1, 'I'],
