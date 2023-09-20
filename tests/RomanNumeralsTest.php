@@ -1,7 +1,7 @@
 <?php
 
 use PHPUnit\Framework\TestCase;
-use App\PrimeFactors;
+use App\RomanNumerals;
 
 class RomanNumeralsTest extends TestCase
 {
