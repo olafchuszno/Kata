@@ -50,11 +50,18 @@ class GameTest extends TestCase
 
         $game->roll(8);
 
+        $game->roll(1);
+
+        $game->roll(10);
+
+        $game->roll(4);
+        $game->roll(4);
+
         // foreach (range(1, 17) as $roll) {
-        //     $game->roll(0);
+        //     $game->roll(1);
         // }
 
-        $this->assertEquals(26, $game->score());
+        $this->assertEquals(53, $game->score());
 
     }
 
