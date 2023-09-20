@@ -1,5 +1,6 @@
 <?php
 
+use App\RomanNumbers;
 use PHPUnit\Framework\TestCase;
 use App\RomanNumerals;
 
@@ -17,7 +18,11 @@ class RomanNumeralsTest extends TestCase
     {
         return [
             [1, 'I'],
-            [2, 'II']
+            [2, 'II'],
+            [3, 'III'],
+            [900, 'CM'],
+            [1499, 'MCDXCIX'],
+            [2999, 'MMCMXCIX']
         ];
     }
 }
