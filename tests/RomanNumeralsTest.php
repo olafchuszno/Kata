@@ -20,6 +20,12 @@ class RomanNumeralsTest extends TestCase
         $this->assertFalse(RomanNumerals::generate(0));
     }
 
+    /** @test */
+    public function it_cannot_generate_a_roman_numeral_for_more_than_4000()
+    {
+        $this->assertFalse(RomanNumerals::generate(4001));
+    }
+
     public static function checks()
     {
         return [

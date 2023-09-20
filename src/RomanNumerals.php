@@ -25,6 +25,8 @@ class RomanNumerals
     {
         if ($number <= 0) {
             return false;
+        } elseif ($number > 4000) {
+            return false;
         }
 
         $result = '';
