@@ -23,6 +23,10 @@ class RomanNumerals
 
     public static function generate($number)
     {
+        if ($number <= 0) {
+            return false;
+        }
+
         $result = '';
 
         while ($number > 0) {

@@ -14,12 +14,23 @@ class RomanNumeralsTest extends TestCase
         $this->assertEquals($numeral, RomanNumerals::generate($number));
     }
 
+    /** @test */
+    public function it_cannot_generate_a_roman_numeral_for_less_than_1()
+    {
+        $this->assertFalse(RomanNumerals::generate(0));
+    }
+
     public static function checks()
     {
         return [
             [1, 'I'],
             [2, 'II'],
             [3, 'III'],
+            [10, 'X'],
+            [49, 'XLIX'],
+            [100, 'C'],
+            [400, 'CD'],
+            [500, 'D'],
             [900, 'CM'],
             [1499, 'MCDXCIX'],
             [2999, 'MMCMXCIX']
