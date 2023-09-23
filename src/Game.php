@@ -5,108 +5,107 @@ namespace App;
 
 class Game
 {
+    const FRAMES_PER_GAME = 10;
 
-    protected array $rolls = [];
-
-    // pins variable holds the count of actual pins knocked
-    protected array $pins = [];
-
-    protected $bonus = 0;
-
-    protected $addToBonus = 0;
-
-
-
+    protected $rolls = [];
 
 
     public function roll(int $pins)
     {
-        // update the 'pins' array about the actual number of pins knocked
-        $this->pins[] = $pins;
-
-
-        // Check for STRIKE or SPARE
-        if ($this->strike($pins)) {
-
-            // It's' a STRIKE! Increment the addToBonus variable by 2
-            $this->addToBonus += 2;
-
-        } else if ($this->spare($pins)) {
-
-            // It's a SPARE! Increment the addToBonus variable by 2
-            $this->addToBonus += 1;
-        }
-
-
-        // Check whether bonus applies to this round
-        if ($this->bonus > 0) {
-            // Apply bonus to this roll's score
-            $pins *= 2;
-
-            // Decrement the bonus
-            $this->bonus -= 1;
-        }
-
-        // Increment the bonus variable for next round/s
-        $this->bonus += $this->addToBonus;
-        
-        // Reset addToBonus variable
-        $this->addToBonus = 0;
-
-        // Return the score for this roll
-        return $this->rolls[] = $pins;
+        $this->rolls[] = $pins;
     }
-
-
-
-
 
 
     public function score()
     {
-        return array_sum($this->rolls);
-    }
+        $score = 0;
 
+        $roll = 0;
 
+        $bonus = 0;
 
+        
+        foreach (range(1, static::FRAMES_PER_GAME) as $frame) {
 
+            $strike = false;
 
+            // if there was a strike in the current frame
+            if ($this->rolls[$roll] == 10) {
 
-    // STRIKE
-    protected function strike(int $pins)
-    {   
-        // If it is the first out of the 2 throws
-        if (count($this->rolls) == 0 || count($this->rolls) % 2 == 0) {
+                $strike = true;
 
-            // If all pins were knocked down at once
-            if ($pins == 10) {
+                if ($bonus > 0) {
 
-                return true;
+                    $this_frames_pins = 20;
+
+                    $bonus = 0;
+
+                } else {
+
+                    $this_frames_pins = 10;
+                }
+
+            } else {
+
+                // if there's was a strike in the previous frame
+                if ($bonus == 2) {
+
+                    // Apply the bonus to the current frame
+                    $this_frames_pins = ($this->rolls[$roll] + $this->rolls[$roll+1]) * 2;
+
+                    // Decrement the bonus for future rounds
+                    $bonus = 0;
+
+                } elseif ($bonus == 1) {
+
+                    // there was a spare in the previous frame
+
+                    // Apply the bonus to the current frame's first roll
+                    $this_frames_pins = ($this->rolls[$roll]) * 2 + $this->rolls[$roll+1];
+
+                    // Decrement the bonus for future rounds
+                    $bonus = 0;
+
+                } else {
+
+                    // There is no bonus
+
+                    // there WASN'T a strike NOW
+                    $this_frames_pins = $this->rolls[$roll] + $this->rolls[$roll+1];
+                    }
+
             }
-        }
-
-        return false;
-    }
 
 
+            // Update the score
+            $score += $this_frames_pins;
 
+            if ($strike) {
 
-
-
-    // SPARE
-    protected function spare(int $pins)
-    {
-        // If it is the second out of the 2 throws
-        if (count($this->rolls) != 0 && count($this->rolls) % 2 != 0) {
-
-            // If all pins from the last round (2 throws)
-            if (end($this->pins) + $pins == 10) {
-
-                return true;
+                $bonus = 2;
             }
-        }
 
-        return false;
+            // If there was a spare in this frame increase the bonus for the following roll
+            if ($this->rolls[$roll] + $this->rolls[$roll+1] == 10) {
+
+                // It's a spare
+                $bonus += 1;
+            }
+
+            // Increment the roll after counting this frames's results
+            if ($strike) {
+
+                $roll += 1;
+            } else {
+
+                $roll += 2;
+            }
+
+        }
+            
+        return $score;
     }
 
 }
+
+

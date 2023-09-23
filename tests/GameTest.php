@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestCase;
     2. consists of 10 frames
     3. each frame has 1-2 rolls 
         if you throw less than 10 points, you get a second throw
-    4. Check for strike and spare and apply (strike to 2 next throws), (spare to 1 next throw)
+    4. Check for strike and spare and apply a bonus (for a strike, to next 2 frames), (spare to 1 next throw)
     5. If on the 10th throw you get a 'strike' you get 2 more throws
     6. If on the 10th throw you get a 'spare' you get 1 more throw
 
@@ -57,9 +57,9 @@ class GameTest extends TestCase
         $game->roll(4);
         $game->roll(4);
 
-        // foreach (range(1, 17) as $roll) {
-        //     $game->roll(1);
-        // }
+        foreach (range(1, 12) as $roll) {
+            $game->roll(0);
+        }
 
         $this->assertEquals(53, $game->score());
 
