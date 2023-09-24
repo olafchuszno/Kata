@@ -35,12 +35,18 @@ class Game
             // If it is the last frame
             if ($frame == 10) {
 
+                // Update this frame's pins
                 $this_frames_pins = $first_roll + $second_roll;
 
+                // If there was a third roll in this frame
                 if (isset($this->rolls[$roll+2])) {
 
+                    // Add pins from the third roll
                     $this_frames_pins += $this->rolls[$roll + 2];
                 }
+
+
+                // ! There are no bonuses to calculate in the last frame, update final score & break
 
                 // Update the score
                 $score += $this_frames_pins;
@@ -88,6 +94,7 @@ class Game
 
                     // There is no bonus
 
+                    // Update this frame's pins
                     $this_frames_pins = $first_roll + $second_roll;
 
                 }
