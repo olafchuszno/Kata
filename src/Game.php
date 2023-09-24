@@ -29,18 +29,26 @@ class Game
 
             $strike = false;
 
+            $first_roll = $this->rolls[$roll];
+            $second_roll = $this->rolls[$roll + 1];
+
             // If it is the last frame
             if ($frame == 10) {
 
-                $this_frames_pins = $this->rolls[$roll] + $this->rolls[$roll + 1];
+                $this_frames_pins = $first_roll + $second_roll;
 
                 if (isset($this->rolls[$roll+2])) {
 
                     $this_frames_pins += $this->rolls[$roll + 2];
                 }
 
+                // Update the score
+                $score += $this_frames_pins;
+
+                break;
+
                 // if there was a strike NOW
-            } elseif ($this->rolls[$roll] == 10) {
+            } elseif ($first_roll == 10) {
 
                 $strike = true;
 
@@ -61,7 +69,7 @@ class Game
                 if ($bonus == 2) {
 
                     // Apply the bonus to the current frame
-                    $this_frames_pins = ($this->rolls[$roll] + $this->rolls[$roll+1]) * 2;
+                    $this_frames_pins = ($first_roll + $second_roll) * 2;
 
                     // Decrement the bonus for future rounds
                     $bonus = 0;
@@ -71,7 +79,7 @@ class Game
                     // there was a spare in the previous frame
 
                     // Apply the bonus to the current frame's first roll
-                    $this_frames_pins = ($this->rolls[$roll]) * 2 + $this->rolls[$roll+1];
+                    $this_frames_pins = ($first_roll) * 2 + $second_roll;
 
                     // Decrement the bonus for future rounds
                     $bonus = 0;
@@ -80,8 +88,7 @@ class Game
 
                     // There is no bonus
 
-                    // there WASN'T a strike NOW
-                    $this_frames_pins = $this->rolls[$roll] + $this->rolls[$roll+1];
+                    $this_frames_pins = $first_roll + $second_roll;
 
                 }
 
@@ -97,10 +104,10 @@ class Game
             }
 
             // If there was a spare in this frame increase the bonus for the following roll
-            if ($this->rolls[$roll] + $this->rolls[$roll+1] == 10) {
+            if ($first_roll + $second_roll == 10) {
 
                 // It's a spare
-                $bonus += 1;
+                $bonus = 1;
             }
 
             // Increment the roll after counting this frames's results
