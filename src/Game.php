@@ -21,13 +21,8 @@ class Game
         $score = 0;
 
         $roll = 0;
-
-        $bonus = 0;
-
         
         foreach (range(1, static::FRAMES_PER_GAME) as $frame) {
-
-            $strike = false;
 
             $first_roll = $this->rolls[$roll];
             $second_roll = $this->rolls[$roll + 1];
@@ -53,81 +48,66 @@ class Game
 
                 break;
 
-                // if there was a strike NOW
-            } elseif ($first_roll == 10) {
+                // if there was a strike NOW (and it's before the 9th frame)
+            } elseif ($this->strike($first_roll, $frame)) {
 
-                $strike = true;
+                // if there is a strike in the next frame
+                if ($this->rolls[$roll + 2] == 10) {
 
-                if ($bonus > 0) {
-
-                    $this_frames_pins = 20;
-
-                    $bonus = 0;
-
+                    $this_frames_pins = 30;
+                    
+                    // if there is NOT a strike in the next frame
                 } else {
 
-                    $this_frames_pins = 10;
+                    // Add the bonus pins
+                    $this_frames_pins = 10 + $this->rolls[$roll + 1] + $this->rolls[$roll + 2];
                 }
 
+                $roll += 1;
+
+                // if there was a spare NOW (and it's before the 9th frame)
+            } elseif ($this->spare($first_roll, $second_roll, $frame)) {
+
+                // Add the bonus pins
+                $this_frames_pins = 10 + $this->rolls[$roll + 2];
+
+                // Increment the roll after counting this frames's results
+                $roll += 2;
+
+                // There was neither a strike nor a spare
             } else {
 
-                // if there's was a strike in the previous frame
-                if ($bonus == 2) {
+                $this_frames_pins = $first_roll + $second_roll;
 
-                    // Apply the bonus to the current frame
-                    $this_frames_pins = ($first_roll + $second_roll) * 2;
-
-                    // Decrement the bonus for future rounds
-                    $bonus = 0;
-
-                } elseif ($bonus == 1) {
-
-                    // there was a spare in the previous frame
-
-                    // Apply the bonus to the current frame's first roll
-                    $this_frames_pins = ($first_roll) * 2 + $second_roll;
-
-                    // Decrement the bonus for future rounds
-                    $bonus = 0;
-
-                } else {
-
-                    // There is no bonus
-
-                    // Update this frame's pins
-                    $this_frames_pins = $first_roll + $second_roll;
-
-                }
-
+                // Increment the roll after counting this frames's results
+                $roll += 2;
             }
-
 
             // Update the score
             $score += $this_frames_pins;
 
-            if ($strike) {
-
-                $bonus = 2;
-            }
-
-            // If there was a spare in this frame increase the bonus for the following roll
-            if ($first_roll + $second_roll == 10) {
-
-                // It's a spare
-                $bonus = 1;
-            }
-
-            // Increment the roll after counting this frames's results
-            if ($strike) {
-                $roll += 1;
-
-            } else {
-                $roll += 2;
-            }
-
         }
             
         return $score;
+    }
+
+
+    protected function strike($first_roll, $frame)
+    {
+        if ($first_roll == 10 && $frame < 9) {
+            return true;
+        }
+
+        return false;
+    }
+
+    protected function spare($first_roll, $second_roll, $frame)
+    {
+        if ($first_roll + $second_roll == 10 && $frame < 9) {
+            return true;
+        }
+
+        return false;
     }
 
 }
