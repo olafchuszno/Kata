@@ -34,7 +34,7 @@ class Game
                 $score += $first_roll + $second_roll;
 
                 // If there was a third roll in this frame
-                if (isset($this->rolls[$roll+2])) {
+                if ($first_roll == 10 || $first_roll + $second_roll == 10) {
 
                     // Add pins from the third roll
                     $score += $this->rolls[$roll + 2];
