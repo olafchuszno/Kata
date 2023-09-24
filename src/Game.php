@@ -24,6 +24,10 @@ class Game
         
         foreach (range(1, static::FRAMES_PER_GAME) as $frame) {
 
+            if ($frame == 11) {
+                break;
+            }
+
             $first_roll = $this->rolls[$roll];
             $second_roll = $this->rolls[$roll + 1];
 
@@ -33,8 +37,8 @@ class Game
                 // Update this frame's pins
                 $score += $first_roll + $second_roll;
 
-                // If there was a third roll in this frame
-                if ($first_roll == 10 || $first_roll + $second_roll == 10) {
+                // If you scored a strike or a spare in this frame
+                if ($this->strike($first_roll) || $this->spare($first_roll, $second_roll)) {
 
                     // Add pins from the third roll
                     $score += $this->rolls[$roll + 2];
@@ -43,7 +47,7 @@ class Game
 
                 // End of the game, break the loop to return the score
 
-                break;
+                return $score;
 
                 // if there was a strike NOW (and it's before the 9th frame)
             } elseif ($this->strike($first_roll, $frame)) {
@@ -51,7 +55,7 @@ class Game
                 // if there is a strike in the next frame
                 if ($this->rolls[$roll + 2] == 10) {
 
-                    $score += 30;
+                    $score += 20;
                     
                     // There is NO strike in the next frame
                 } else {
@@ -86,18 +90,18 @@ class Game
     }
 
 
-    protected function strike($first_roll, $frame)
+    protected function strike($first_roll)
     {
-        if ($first_roll == 10 && $frame < 9) {
+        if ($first_roll == 10) {
             return true;
         }
 
         return false;
     }
 
-    protected function spare($first_roll, $second_roll, $frame)
+    protected function spare($first_roll, $second_roll)
     {
-        if ($first_roll + $second_roll == 10 && $frame < 9) {
+        if ($first_roll + $second_roll == 10) {
             return true;
         }
 
@@ -105,5 +109,3 @@ class Game
     }
 
 }
-
-

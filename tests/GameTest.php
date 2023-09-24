@@ -41,46 +41,17 @@ class GameTest extends TestCase
     }
 
     /** @test */
-    public function it_awards_a_one_roll_bonus_for_every_spare()
+    public function it_scores_a_perfect_game()
     {
         $game = new Game();
 
-        $game->roll(10);
 
-        $game->roll(2);
-        $game->roll(2);
-
-        $game->roll(5);
-        $game->roll(5);
-
-        $game->roll(4);
-        $game->roll(4);
-
-        $game->roll(10);
-
-        $game->roll(5);
-        $game->roll(5);
-
-        $game->roll(1);
-        $game->roll(1);
-
-        $game->roll(2);
-        $game->roll(2);
-
-        $game->roll(2);
-        $game->roll(2);
-
-        $game->roll(5);
-        $game->roll(5);
-        $game->roll(2);
+        foreach(range(1, 12) as $x) {
+            $game->roll(10);
+        }
 
 
-
-        // foreach (range(1, 21) as $roll) {
-        //     $game->roll(10);
-        // }
-
-        $this->assertEquals(93, $game->score());
+        $this->assertEquals(210, $game->score());
 
     }
 
