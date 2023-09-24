@@ -45,23 +45,42 @@ class GameTest extends TestCase
     {
         $game = new Game();
 
+        $game->roll(10);
+
+        $game->roll(2);
+        $game->roll(2);
+
         $game->roll(5);
         $game->roll(5);
 
-        $game->roll(8);
-
-        $game->roll(1);
+        $game->roll(4);
+        $game->roll(4);
 
         $game->roll(10);
 
-        $game->roll(4);
-        $game->roll(4);
+        $game->roll(5);
+        $game->roll(5);
 
-        foreach (range(1, 12) as $roll) {
-            $game->roll(0);
-        }
+        $game->roll(1);
+        $game->roll(1);
 
-        $this->assertEquals(53, $game->score());
+        $game->roll(2);
+        $game->roll(2);
+
+        $game->roll(2);
+        $game->roll(2);
+
+        $game->roll(5);
+        $game->roll(5);
+        $game->roll(2);
+
+
+
+        // foreach (range(1, 21) as $roll) {
+        //     $game->roll(10);
+        // }
+
+        $this->assertEquals(93, $game->score());
 
     }
 

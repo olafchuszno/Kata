@@ -29,8 +29,18 @@ class Game
 
             $strike = false;
 
-            // if there was a strike in the current frame
-            if ($this->rolls[$roll] == 10) {
+            // If it is the last frame
+            if ($frame == 10) {
+
+                $this_frames_pins = $this->rolls[$roll] + $this->rolls[$roll + 1];
+
+                if (isset($this->rolls[$roll+2])) {
+
+                    $this_frames_pins += $this->rolls[$roll + 2];
+                }
+
+                // if there was a strike NOW
+            } elseif ($this->rolls[$roll] == 10) {
 
                 $strike = true;
 
@@ -72,7 +82,8 @@ class Game
 
                     // there WASN'T a strike NOW
                     $this_frames_pins = $this->rolls[$roll] + $this->rolls[$roll+1];
-                    }
+
+                }
 
             }
 
@@ -94,10 +105,9 @@ class Game
 
             // Increment the roll after counting this frames's results
             if ($strike) {
-
                 $roll += 1;
-            } else {
 
+            } else {
                 $roll += 2;
             }
 
