@@ -43,30 +43,19 @@ class Game
                     // Add pins from the third roll
                     $score += $this->rolls[$roll + 2];
                 }
+                
+                // End of the game
 
 
-                // End of the game, break the loop to return the score
-
-                return $score;
-
-                // if there was a strike NOW (and it's before the 9th frame)
+                // if there was a strike NOW
             } elseif ($this->strike($first_roll, $frame)) {
 
-                // if there is a strike in the next frame
-                if ($this->rolls[$roll + 2] == 10) {
-
-                    $score += 20;
-                    
-                    // There is NO strike in the next frame
-                } else {
-
-                    // Add the bonus pins
-                    $score += 10 + $this->rolls[$roll + 1] + $this->rolls[$roll + 2];
-                }
+                // Add the bonus pins
+                $score += 10 + $this->rolls[$roll + 1] + $this->rolls[$roll + 2];
 
                 $roll += 1;
 
-                // if there was a spare NOW (and it's before the 9th frame)
+                // if there was a spare NOW
             } elseif ($this->spare($first_roll, $second_roll, $frame)) {
 
                 // Add the bonus pins

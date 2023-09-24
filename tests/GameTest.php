@@ -51,7 +51,7 @@ class GameTest extends TestCase
         }
 
 
-        $this->assertEquals(210, $game->score());
+        $this->assertEquals(300, $game->score());
 
     }
 
