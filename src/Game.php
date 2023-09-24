@@ -31,20 +31,17 @@ class Game
             if ($frame == 10) {
 
                 // Update this frame's pins
-                $this_frames_pins = $first_roll + $second_roll;
+                $score += $first_roll + $second_roll;
 
                 // If there was a third roll in this frame
                 if (isset($this->rolls[$roll+2])) {
 
                     // Add pins from the third roll
-                    $this_frames_pins += $this->rolls[$roll + 2];
+                    $score += $this->rolls[$roll + 2];
                 }
 
 
-                // ! There are no bonuses to calculate in the last frame, update final score & break
-
-                // Update the score
-                $score += $this_frames_pins;
+                // End of the game, break the loop to return the score
 
                 break;
 
@@ -54,13 +51,13 @@ class Game
                 // if there is a strike in the next frame
                 if ($this->rolls[$roll + 2] == 10) {
 
-                    $this_frames_pins = 30;
+                    $score += 30;
                     
-                    // if there is NOT a strike in the next frame
+                    // There is NO strike in the next frame
                 } else {
 
                     // Add the bonus pins
-                    $this_frames_pins = 10 + $this->rolls[$roll + 1] + $this->rolls[$roll + 2];
+                    $score += 10 + $this->rolls[$roll + 1] + $this->rolls[$roll + 2];
                 }
 
                 $roll += 1;
@@ -69,7 +66,7 @@ class Game
             } elseif ($this->spare($first_roll, $second_roll, $frame)) {
 
                 // Add the bonus pins
-                $this_frames_pins = 10 + $this->rolls[$roll + 2];
+                $score += 10 + $this->rolls[$roll + 2];
 
                 // Increment the roll after counting this frames's results
                 $roll += 2;
@@ -77,14 +74,11 @@ class Game
                 // There was neither a strike nor a spare
             } else {
 
-                $this_frames_pins = $first_roll + $second_roll;
+                $score += $first_roll + $second_roll;
 
                 // Increment the roll after counting this frames's results
                 $roll += 2;
             }
-
-            // Update the score
-            $score += $this_frames_pins;
 
         }
             
